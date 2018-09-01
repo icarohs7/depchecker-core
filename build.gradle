@@ -1,0 +1,197 @@
+/*
+ *  MIT License
+ *
+ * Copyright (c) 2018.  Icaro R D Temponi
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+buildscript {
+    ext {
+        gradle_version = '4.10'
+        gradlebintrayplugin_version = '1.8.3'
+        gradlegitplugin_version = '0.11.0'
+        kotlin_version = '1.2.61'
+        kotlintest_version = '3.1.7'
+        fuel_version = '1.15.0'
+        slf4j_version = '1.7.25'
+        klaxon_version = '3.0.1'
+    }
+    
+    dependencies {
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$gradlebintrayplugin_version"
+        classpath "gradle.plugin.com.palantir.gradle.gitversion:gradle-git-version:$gradlegitplugin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+    
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+apply plugin: 'com.palantir.git-version'
+apply plugin: 'kotlin'
+
+ext {
+    bintrayRepo = 'libraries'
+    artifactId = 'depchecker-core'
+    licenses = ['MIT']
+    websiteUrl = "https://github.com/icarohs7/$artifactId"
+    issueTrackerUrl = "https://github.com/icarohs7/$artifactId/issues"
+    vcsUrl = "https://github.com/icarohs7/${artifactId}.git"
+    githubRepo = "icarohs7/$artifactId"
+}
+group 'com.github.icarohs7'
+version gitVersion().toString().find('(\\d\\.\\d\\.\\d)')
+description 'A library to check artifact versions programmatically'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+def pomConfig = {
+    licenses {
+        license {
+            name 'MIT License'
+            url 'https://opensource.org/licenses/MIT'
+        }
+    }
+    developers {
+        developer {
+            id 'icarohs7'
+            name 'Icaro R D Temponi'
+            email 'icarohs7@gmail.com'
+        }
+    }
+    
+    scm {
+        url project.vcsUrl
+    }
+}
+
+dependencies {
+    testImplementation "io.kotlintest:kotlintest-runner-junit5:$kotlintest_version"
+    testImplementation "org.slf4j:slf4j-simple:$slf4j_version"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation "com.github.kittinunf.fuel:fuel-coroutines:$fuel_version"
+    implementation "com.beust:klaxon:$klaxon_version"
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+clean {
+    new File('out').deleteDir()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion "$gradle_version"
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+def properties = new Properties()
+properties.load(new FileInputStream("$projectDir/local.properties"))
+
+bintray {
+    user = properties.getProperty('BINTRAY_USER')
+    key = properties.getProperty('BINTRAY_KEY')
+    publications = ['mavenJava']
+    publish = true
+    
+    pkg {
+        repo = project.bintrayRepo
+        name = project.artifactId
+        desc = project.description
+        licenses = project.licenses
+        websiteUrl = project.websiteUrl
+        issueTrackerUrl = project.issueTrackerUrl
+        vcsUrl = project.vcsUrl
+        githubRepo = project.githubRepo
+        publicDownloadNumbers = true
+        
+        version {
+            name = project.version
+            released = new Date()
+            vcsTag = project.version
+            
+            gpg {
+                sign = true
+                passphrase = properties.getProperty('GPG_PASS')
+            }
+            mavenCentralSync {
+                sync = true
+                user = properties.getProperty('OSS_USER')
+                password = properties.getProperty('OSS_PASS')
+                close = '1'
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: project.classes) {
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: project.javadoc) {
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar, javadocJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId project.bintray.pkg.name
+            groupId project.group
+            version project.version
+            from components.java
+            
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', project.description)
+                root.appendNode('name', project.bintray.pkg.name)
+                root.appendNode('url', project.bintray.pkg.websiteUrl)
+                root.children().last() + pomConfig
+            }
+            
+            artifact sourcesJar {
+                classifier = 'sources'
+            }
+            artifact javadocJar {
+                classifier = 'javadoc'
+            }
+        }
+    }
+}

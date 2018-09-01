@@ -1,0 +1,21 @@
+
+#ide files
+*.iml
+/.idea
+
+#log files
+*.log
+
+#windows thumbs
+Thumbs.db
+
+#local properties
+local.properties
+
+#output folders
+/dist
+/build
+/out
+
+#gradle wrapper
+/.gradle
