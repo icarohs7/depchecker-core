@@ -14,7 +14,12 @@ A library to check artifact versions programmatically (currently with MavenCentr
 
 ## Adding to project
 ````groovy
-implementation "com.github.icarohs7:depchecker-core:$depchecker_version"
+dependencies {
+    implementation "com.github.icarohs7:depchecker-core:$depchecker_version"
+}
+repositories {
+    mavenCentral()
+}
 ````
 
 ## Usage
