@@ -12,6 +12,11 @@ https://github.com/icarohs7/depchecker-core/blob/master/LICENSE)
 ## Description
 A library to check artifact versions programmatically (currently with MavenCentral repository)
 
+## Adding to project
+````groovy
+implementation "com.github.icarohs7:depchecker-core:$depchecker_version"
+````
+
 ## Usage
 ````kotlin
 val artifact = Artifact("com.github.icarohs7.unoxlib:UNoxLib")
@@ -40,4 +45,5 @@ as shown in the class `MavenCentralRepositoryImpl`, under
 the package repositories
 
 ## More Examples
-More usages can be found under the test package
+More usages can be found under the [test package](
+https://github.com/icarohs7/depchecker-core/tree/master/src/test/kotlin/com/github/icarohs7)
