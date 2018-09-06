@@ -22,19 +22,17 @@
  * SOFTWARE.
  */
 
-package com.github.icarohs7.integration
+package com.github.icarohs7.persistence
 
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
+import com.github.icarohs7.entities.Artifact
 
-class HttpRequestExtensionsTest : StringSpec() {
-    init {
-        "should make a http get request" {
-            val baseUrl = "http://www.mocky.io/v2/5b8a68112c00006506280f95"
-            val response = baseUrl.httpGetResponse()
-            
-            response.statusCode shouldBe 200
-            response.body shouldBe """{"response":"hello"}"""
-        }
+interface ArtifactDao {
+    fun insert(artifact: Artifact)
+    fun remove(artifact: Artifact)
+    fun removeAll()
+    fun queryAll(): List<Artifact>
+    
+    companion object {
+        fun getInMemoryDatabaseInstance(): ArtifactDao = ArtifactRamDatabase
     }
 }

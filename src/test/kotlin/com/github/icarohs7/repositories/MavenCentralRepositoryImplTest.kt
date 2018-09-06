@@ -28,21 +28,35 @@ import com.github.icarohs7.entities.Artifact
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class MavenCentralRepositoryImplTest : StringSpec({
-    val artifact = Artifact("com.github.icarohs7.unoxlib:UNoxLib")
-    
-    "should get the list of versions of an artifact from maven central" {
-        val versions = MavenCentralRepositoryImpl.getAllVersions(artifact)
-        versions shouldBe listOf("0.3.1", "0.3.0", "0.2.4", "0.2.3", "0.2.0", "0.1.1")
+class MavenCentralRepositoryImplTest : StringSpec() {
+    init {
+        val artifact = Artifact("com.github.icarohs7.unoxlib:UNoxLib")
+        
+        "should get the list of versions of an artifact from maven central" {
+            val versions = MavenCentralRepositoryImpl.getAllVersions(artifact)
+            val versionsExt = artifact.getAllVersionsAt(MavenCentralRepositoryImpl)
+            val expectedList = listOf("0.3.1", "0.3.0", "0.2.4", "0.2.3", "0.2.0", "0.1.1")
+            versions shouldBe expectedList
+            versionsExt shouldBe expectedList
+        }
+        
+        "should get the most recent version of an artifact from maven central" {
+            val version = MavenCentralRepositoryImpl.getLastVersion(artifact)
+            val versionExt = artifact.getLastVersionAt(MavenCentralRepositoryImpl)
+            version shouldBe "0.3.1"
+            versionExt shouldBe "0.3.1"
+        }
+        
+        "should return an empty list when artifact can't be found" {
+            val artifact2 = Artifact("thisshould:notexist and spaces are not valid anyway")
+            MavenCentralRepositoryImpl.getAllVersions(artifact2) shouldBe emptyList()
+            artifact2.getAllVersionsAt(MavenCentralRepositoryImpl) shouldBe emptyList()
+        }
+        
+        "should return null when artifact can't be found" {
+            val artifact2 = Artifact("thisshould:notexist and spaces are not valid anyway")
+            MavenCentralRepositoryImpl.getLastVersion(artifact2) shouldBe null
+            artifact2.getLastVersionAt(MavenCentralRepositoryImpl) shouldBe null
+        }
     }
-    
-    "should get the most recent version of an artifact from maven central" {
-        val version = MavenCentralRepositoryImpl.getLastVersion(artifact)
-        version shouldBe "0.3.1"
-    }
-    
-    "should return an empty list when artifact can't be found" {
-        val artifact2 = Artifact("thisshould:notexist and spaces are not valid anyway")
-        MavenCentralRepositoryImpl.getAllVersions(artifact2) shouldBe emptyList()
-    }
-})
+}

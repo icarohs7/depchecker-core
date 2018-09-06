@@ -24,17 +24,8 @@
 
 package com.github.icarohs7.integration
 
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
-
-class HttpRequestExtensionsTest : StringSpec() {
-    init {
-        "should make a http get request" {
-            val baseUrl = "http://www.mocky.io/v2/5b8a68112c00006506280f95"
-            val response = baseUrl.httpGetResponse()
-            
-            response.statusCode shouldBe 200
-            response.body shouldBe """{"response":"hello"}"""
-        }
-    }
+internal interface DcResponse {
+    val statusCode: Int
+    val body: String
+    val successful: Boolean
 }

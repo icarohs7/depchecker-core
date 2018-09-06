@@ -22,10 +22,12 @@
  * SOFTWARE.
  */
 
-package com.github.icarohs7.entities
+package io.kotlintest.provided
 
-internal interface DcResponse {
-    val statusCode: Int
-    val body: String
-    val successful: Boolean
+import io.kotlintest.AbstractProjectConfig
+
+class ProjectConfig : AbstractProjectConfig() {
+    override fun parallelism(): Int {
+        return 4 //4 tests runned at once, 4 threads
+    }
 }

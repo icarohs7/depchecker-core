@@ -24,7 +24,6 @@
 
 package com.github.icarohs7.integration
 
-import com.github.icarohs7.entities.DcResponse
 import com.github.kittinunf.fuel.httpGet
 
 internal fun String.httpGetResponse(): DcResponse {

@@ -27,18 +27,20 @@ package com.github.icarohs7.integration
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class JsonExtensionsTest : StringSpec({
-    val json = """{"name":"Icaro","age":21}"""
-    
-    "should parse json" {
-        val parsedJson = json.toJsonObject()
-        parsedJson?.string("name") shouldBe "Icaro"
-        parsedJson?.int("age") shouldBe 21
-    }
-    
-    "should return null when json is invalid" {
-        """
+class JsonExtensionsTest : StringSpec() {
+    init {
+        val json = """{"name":"Icaro","age":21}"""
+        
+        "should parse json" {
+            val parsedJson = json.toJsonObject()
+            parsedJson?.string("name") shouldBe "Icaro"
+            parsedJson?.int("age") shouldBe 21
+        }
+        
+        "should return null when json is invalid" {
+            """
             {"this","should","use","brackets","instead","of","braces"}
         """.trimIndent().replace("\n", "").toJsonObject() shouldBe null
+        }
     }
-})
+}

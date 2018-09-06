@@ -22,19 +22,31 @@
  * SOFTWARE.
  */
 
-package com.github.icarohs7.integration
+package com.github.icarohs7.persistence
 
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
+import com.github.icarohs7.entities.Artifact
 
-class HttpRequestExtensionsTest : StringSpec() {
-    init {
-        "should make a http get request" {
-            val baseUrl = "http://www.mocky.io/v2/5b8a68112c00006506280f95"
-            val response = baseUrl.httpGetResponse()
-            
-            response.statusCode shouldBe 200
-            response.body shouldBe """{"response":"hello"}"""
-        }
+/**
+ * Implementation of the persistence layer for artifacts
+ * using in-memory storage
+ */
+internal object ArtifactRamDatabase : ArtifactDao {
+    
+    private val storedArtifacts = mutableSetOf<Artifact>()
+    
+    override fun insert(artifact: Artifact) {
+        storedArtifacts += artifact
+    }
+    
+    override fun remove(artifact: Artifact) {
+        storedArtifacts -= artifact
+    }
+    
+    override fun removeAll() {
+        storedArtifacts.clear()
+    }
+    
+    override fun queryAll(): List<Artifact> {
+        return storedArtifacts.toList()
     }
 }

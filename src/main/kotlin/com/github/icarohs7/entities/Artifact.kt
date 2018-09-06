@@ -30,4 +30,12 @@ data class Artifact(val group: String, val artifactId: String) {
     override fun toString(): String {
         return "$group:$artifactId"
     }
+    
+    fun getLastVersionAt(repository: DcRepository): String? {
+        return repository.getLastVersion(this)
+    }
+    
+    fun getAllVersionsAt(repository: DcRepository): List<String> {
+        return repository.getAllVersions(this)
+    }
 }
