@@ -2,9 +2,9 @@
 [![GitHub version](
 https://badge.fury.io/gh/icarohs7%2Fdepchecker-core.svg)](
 https://github.com/icarohs7/depchecker-core/releases)
-[![Maven Central](
-https://maven-badges.herokuapp.com/maven-central/com.github.icarohs7/depchecker-core/badge.svg)](
-https://mvnrepository.com/artifact/com.github.icarohs7/depchecker-core)
+[![](
+https://jitpack.io/v/icarohs7/depchecker-core.svg)](
+https://jitpack.io/#icarohs7/depchecker-core)
 [![GitHub license](
 https://img.shields.io/github/license/icarohs7/depchecker-core.svg)](
 https://github.com/icarohs7/depchecker-core/blob/master/LICENSE)
@@ -18,7 +18,7 @@ dependencies {
     implementation "com.github.icarohs7:depchecker-core:$depchecker_version"
 }
 repositories {
-    mavenCentral()
+    maven { url "https://jitpack.io" }
 }
 ````
 

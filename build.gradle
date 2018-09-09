@@ -23,68 +23,25 @@
  */
 
 buildscript {
-    ext {
-        gradle_version = '4.10'
-        kotlin_version = '1.2.61'
-        kotlintest_version = '3.1.7'
-        fuel_version = '1.15.0'
-        slf4j_version = '1.7.25'
-        klaxon_version = '3.0.1'
-    }
-    
-    dependencies {
-        classpath 'gradle.plugin.com.palantir.gradle.gitversion:gradle-git-version:0.11.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-    
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-    }
+    ext.gradle_version = '4.10'
+    ext.kotlin_version = '1.2.61'
+    ext.kotlintest_version = '3.1.7'
+    ext.fuel_version = '1.15.0'
+    ext.slf4j_version = '1.7.25'
+    ext.klaxon_version = '3.0.1'
 }
 
 plugins {
-    id 'com.jfrog.bintray' version '1.8.3'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.61'
+    id 'com.palantir.git-version' version '0.11.0'
+    id 'maven-publish'
 }
 
-apply plugin: 'com.palantir.git-version'
-apply plugin: 'kotlin'
-apply plugin: 'maven-publish'
-
-ext {
-    bintrayRepo = 'libraries'
-    artifactId = 'depchecker-core'
-    licenses = ['MIT']
-    websiteUrl = "https://github.com/icarohs7/$artifactId"
-    issueTrackerUrl = "https://github.com/icarohs7/$artifactId/issues"
-    vcsUrl = "https://github.com/icarohs7/${artifactId}.git"
-    githubRepo = "icarohs7/$artifactId"
-}
 group 'com.github.icarohs7'
 version gitVersion().toString().find('(\\d\\.\\d\\.\\d)')
 description 'A library to check artifact versions programmatically'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-def pomConfig = {
-    licenses {
-        license {
-            name 'MIT License'
-            url 'https://opensource.org/licenses/MIT'
-        }
-    }
-    developers {
-        developer {
-            id 'icarohs7'
-            name 'Icaro R D Temponi'
-            email 'icarohs7@gmail.com'
-        }
-    }
-    
-    scm {
-        url project.vcsUrl
-    }
-}
 
 dependencies {
     testImplementation "io.kotlintest:kotlintest-runner-junit5:$kotlintest_version"
@@ -122,77 +79,3 @@ task wrapper(type: Wrapper) {
 
 def properties = new Properties()
 properties.load(new FileInputStream("$projectDir/local.properties"))
-
-bintray {
-    user = properties.getProperty('BINTRAY_USER')
-    key = properties.getProperty('BINTRAY_KEY')
-    publications = ['mavenJava']
-    publish = true
-    
-    pkg {
-        repo = project.bintrayRepo
-        name = project.artifactId
-        desc = project.description
-        licenses = project.licenses
-        websiteUrl = project.websiteUrl
-        issueTrackerUrl = project.issueTrackerUrl
-        vcsUrl = project.vcsUrl
-        githubRepo = project.githubRepo
-        publicDownloadNumbers = true
-        
-        version {
-            name = project.version
-            released = new Date()
-            vcsTag = project.version
-            
-            gpg {
-                sign = true
-                passphrase = properties.getProperty('GPG_PASS')
-            }
-            mavenCentralSync {
-                sync = true
-                user = properties.getProperty('OSS_USER')
-                password = properties.getProperty('OSS_PASS')
-                close = '1'
-            }
-        }
-    }
-}
-
-task sourcesJar(type: Jar, dependsOn: project.classes) {
-    from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: project.javadoc) {
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar, javadocJar
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId project.bintray.pkg.name
-            groupId project.group
-            version project.version
-            from components.java
-            
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('description', project.description)
-                root.appendNode('name', project.bintray.pkg.name)
-                root.appendNode('url', project.bintray.pkg.websiteUrl)
-                root.children().last() + pomConfig
-            }
-            
-            artifact sourcesJar {
-                classifier = 'sources'
-            }
-            artifact javadocJar {
-                classifier = 'javadoc'
-            }
-        }
-    }
-}
