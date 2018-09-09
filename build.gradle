@@ -34,7 +34,7 @@ buildscript {
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.2.61'
     id 'com.palantir.git-version' version '0.11.0'
-    id 'maven-publish'
+    id 'maven'
 }
 
 group 'com.github.icarohs7'
@@ -77,5 +77,31 @@ task wrapper(type: Wrapper) {
     distributionType = Wrapper.DistributionType.ALL
 }
 
-def properties = new Properties()
-properties.load(new FileInputStream("$projectDir/local.properties"))
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            licenses {
+                license {
+                    name 'The MIT License'
+                    url 'https://opensource.org/licenses/MIT'
+                    distribution 'repo'
+                }
+            }
+        }
+    }
+}
