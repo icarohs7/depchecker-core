@@ -1,7 +1,18 @@
 language: java
 
+env:
+  global:
+    - CODECOV_TOKEN="495d6f1b-5cc8-4225-b9f0-523d21ce9520"
+
+cache:
+  directories:
+    - $HOME/.m2
+
 jdk:
   - oraclejdk8
 
 before_install:
   - chmod +x gradlew
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
