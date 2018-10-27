@@ -6,6 +6,8 @@ https://github.com/icarohs7/depchecker-core/releases)
 https://jitpack.io/#icarohs7/depchecker-core)
 [![Build Status](https://travis-ci.com/icarohs7/depchecker-core.svg?branch=master)](
 https://travis-ci.org/icarohs7/depchecker-core)
+[![Codecov](https://img.shields.io/codecov/c/github/icarohs7/depchecker-core.svg)](
+https://codecov.io/gh/icarohs7/depchecker-core)
 [![GitHub license](https://img.shields.io/github/license/icarohs7/depchecker-core.svg)](
 https://github.com/icarohs7/depchecker-core/blob/master/LICENSE)
 
