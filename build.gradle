@@ -59,23 +59,11 @@ jacoco {
     toolVersion = "0.8.2"
 }
 
-task codeCoverageReport(type: JacocoReport) {
-    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-
-    subprojects.each {
-        sourceSets it.sourceSets.main
-    }
-
+jacocoTestReport {
     reports {
-        xml.enabled true
-        xml.destination(file("${buildDir}/reports/jacoco/report.xml"))
-        html.enabled false
-        csv.enabled false
+        xml.enabled = true
+        html.enabled = false
     }
-}
-
-codeCoverageReport.dependsOn {
-    subprojects*.test
 }
 
 compileKotlin {
