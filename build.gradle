@@ -26,6 +26,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.2.61"
     id("com.palantir.git-version") version "0.11.0"
     id("maven")
+    id("jacoco")
 }
 apply(from: "buildSrc/libs.gradle")
 
@@ -37,7 +38,7 @@ targetCompatibility = 1.8
 
 dependencies {
     //Kotlin
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
     //Fuel
     implementation "com.github.kittinunf.fuel:fuel-coroutines:${versions.fuel}"
@@ -46,8 +47,12 @@ dependencies {
     implementation "com.beust:klaxon:${versions.klaxon}"
 
     //Test
-    testImplementation "io.kotlintest:kotlintest-runner-junit5:${versions.kotlintest}"
-    testImplementation "org.slf4j:slf4j-simple:${versions.slf4j}"
+    testImplementation "se.lovef:kotlin-assert-utils:${versions.kotlinAssertUtils}"
+}
+
+jacoco {
+    toolVersion = "0.8.2"
+    reportsDir = file("$buildDir/jacoco")
 }
 
 repositories {
@@ -61,10 +66,6 @@ compileKotlin {
 
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-test {
-    useJUnitPlatform()
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

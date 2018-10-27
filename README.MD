@@ -2,9 +2,9 @@
 
 [![GitHub version](https://badge.fury.io/gh/icarohs7%2Fdepchecker-core.svg)](
 https://github.com/icarohs7/depchecker-core/releases)
-[![](https://jitpack.io/v/icarohs7/depchecker-core.svg)](
+[![Jitpack Version](https://jitpack.io/v/icarohs7/depchecker-core.svg)](
 https://jitpack.io/#icarohs7/depchecker-core)
-[![Build Status](https://travis-ci.org/icarohs7/depchecker-core.svg?branch=master)](
+[![Build Status](https://travis-ci.com/icarohs7/depchecker-core.svg?branch=master)](
 https://travis-ci.org/icarohs7/depchecker-core)
 [![GitHub license](https://img.shields.io/github/license/icarohs7/depchecker-core.svg)](
 https://github.com/icarohs7/depchecker-core/blob/master/LICENSE)

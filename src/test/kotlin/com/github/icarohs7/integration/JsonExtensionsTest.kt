@@ -24,23 +24,26 @@
 
 package com.github.icarohs7.integration
 
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
+import org.junit.Test
+import se.lovef.assert.v1.shouldEqual
 
-class JsonExtensionsTest : StringSpec() {
-    init {
-        val json = """{"name":"Icaro","age":21}"""
-        
-        "should parse json" {
-            val parsedJson = json.toJsonObject()
-            parsedJson?.string("name") shouldBe "Icaro"
-            parsedJson?.int("age") shouldBe 21
-        }
-        
-        "should return null when json is invalid" {
-            """
+class JsonExtensionsTest {
+
+    @Test
+    fun `should parse json`() {
+        //Arrange
+        val parsedJson = """{"name":"Icaro","age":21}""".toJsonObject()
+
+        //Assert
+        parsedJson?.string("name") shouldEqual "Icaro"
+        parsedJson?.int("age") shouldEqual 21
+    }
+
+    @Test
+    fun `should return null when json is invalid`() {
+        //Arrange && Assert
+        """
             {"this","should","use","brackets","instead","of","braces"}
-        """.trimIndent().replace("\n", "").toJsonObject() shouldBe null
-        }
+        """.trimIndent().replace("\n", "").toJsonObject() shouldEqual null
     }
 }

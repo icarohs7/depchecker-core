@@ -24,26 +24,37 @@
 
 package com.github.icarohs7.entities
 
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
+import org.junit.Test
+import se.lovef.assert.v1.shouldEqual
 
-class ArtifactTest : StringSpec() {
-    init {
-        "should create an artifact by its group and id" {
-            val artifact = Artifact(group = "com.github.icarohs7", artifactId = "unoxkcommons")
-            artifact.group shouldBe "com.github.icarohs7"
-            artifact.artifactId shouldBe "unoxkcommons"
-        }
-        
-        "should create an artifact by its group and id in a single string" {
-            val artifact = Artifact("com.github.icarohs7:unoxkcommons")
-            artifact.group shouldBe "com.github.icarohs7"
-            artifact.artifactId shouldBe "unoxkcommons"
-        }
-        
-        "should convert and artefact to string" {
-            val artifact = Artifact(group = "com.github.icarohs7", artifactId = "unoxkcommons")
-            artifact.toString() shouldBe "com.github.icarohs7:unoxkcommons"
-        }
+class ArtifactTest {
+
+    @Test
+    fun `should create an artifact by its group and id`() {
+        //Arrange
+        val artifact = Artifact(group = "com.github.icarohs7", artifactId = "unoxkcommons")
+
+        //Assert
+        artifact.group shouldEqual "com.github.icarohs7"
+        artifact.artifactId shouldEqual "unoxkcommons"
+    }
+
+    @Test
+    fun `should create an artifact by its group and id in a single string`() {
+        //Arrange
+        val artifact = Artifact("com.github.icarohs7:unoxkcommons")
+
+        //Assert
+        artifact.group shouldEqual "com.github.icarohs7"
+        artifact.artifactId shouldEqual "unoxkcommons"
+    }
+
+    @Test
+    fun `should convert and artefact to string`() {
+        //Arrange
+        val artifact = Artifact(group = "com.github.icarohs7", artifactId = "unoxkcommons")
+
+        //Assert
+        artifact.toString() shouldEqual "com.github.icarohs7:unoxkcommons"
     }
 }

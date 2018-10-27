@@ -25,60 +25,80 @@
 package com.github.icarohs7.persistence
 
 import com.github.icarohs7.entities.Artifact
-import io.kotlintest.*
-import io.kotlintest.specs.StringSpec
+import org.junit.Before
+import org.junit.Test
+import se.lovef.assert.v1.shouldEqual
 
-class ArtifactRamDatabaseTest : StringSpec() {
-    override fun isInstancePerTest(): Boolean {
-        return true
-    }
-    
-    override fun beforeTest(description: Description) {
+class ArtifactRamDatabaseTest {
+
+    @Before
+    fun setUp() {
         ArtifactDao.getInMemoryDatabaseInstance().removeAll()
     }
-    
-    init {
-        "should persist an artifact"{
-            val artifact = Artifact("com.github.icarohs7:depchecker-core")
-            val dao = ArtifactDao.getInMemoryDatabaseInstance()
-            dao.insert(artifact)
-            dao.queryAll() shouldBe listOf(Artifact("com.github.icarohs7:depchecker-core"))
-        }
-        
-        "should remove an artifact" {
-            val artifact = Artifact("com.github.icarohs7:depchecker-core")
-            val dao = ArtifactDao.getInMemoryDatabaseInstance()
-            dao.insert(artifact)
-            dao.remove(artifact)
-            dao.queryAll().forEach(::println)
-            dao.queryAll() shouldBe emptyList()
-        }
-        
-        "should erase the database" {
-            val artifacts = listOf(
+
+    @Test
+    fun `should persist an artifact`() {
+        //Arrange
+        val artifact = Artifact("com.github.icarohs7:depchecker-core")
+        val dao = ArtifactDao.getInMemoryDatabaseInstance()
+
+        //Act
+        dao.insert(artifact)
+
+        //Assert
+        dao.queryAll() shouldEqual listOf(Artifact("com.github.icarohs7:depchecker-core"))
+    }
+
+    @Test
+    fun `should remove an artifact`() {
+        //Arrange
+        val artifact = Artifact("com.github.icarohs7:depchecker-core")
+        val dao = ArtifactDao.getInMemoryDatabaseInstance()
+
+        //Act
+        dao.insert(artifact)
+        dao.remove(artifact)
+
+        //Assert
+        dao.queryAll() shouldEqual emptyList()
+    }
+
+    @Test
+    fun `should erase the database`() {
+        //Arrange
+        val artifacts = listOf(
                 Artifact("com.github.icarohs7:depchecker-core"),
                 Artifact("com.github.icarohs7:UNoxJCommons"),
                 Artifact("com.github.icarohs7:UNoxKCommons")
-            )
-            val dao = ArtifactDao.getInMemoryDatabaseInstance()
-            artifacts.forEach(dao::insert)
-            dao.removeAll()
-            dao.queryAll() shouldBe emptyList()
-        }
-        
-        "should query all artifacts" {
-            val listOfArtifacts = listOf(
+        )
+        val dao = ArtifactDao.getInMemoryDatabaseInstance()
+
+        //Act
+        artifacts.forEach(dao::insert)
+        dao.removeAll()
+
+        //Assert
+        dao.queryAll() shouldEqual emptyList()
+    }
+
+    @Test
+    fun `should query all artifacts`() {
+        //Arrange
+        val listOfArtifacts = listOf(
                 Artifact("com.github.icarohs7:depchecker-core"),
                 Artifact("com.github.icarohs7:UNoxJCommons"),
                 Artifact("com.github.icarohs7:UNoxKCommons")
-            )
-            val dao = ArtifactDao.getInMemoryDatabaseInstance()
-            listOfArtifacts.forEach(dao::insert)
-            val listStored = dao.queryAll()
-            listStored[0] shouldBe Artifact("com.github.icarohs7:depchecker-core")
-            listStored[1] shouldBe Artifact("com.github.icarohs7:UNoxJCommons")
-            listStored[2] shouldBe Artifact("com.github.icarohs7:UNoxKCommons")
-            listStored.size shouldBe 3
-        }
+        )
+        val dao = ArtifactDao.getInMemoryDatabaseInstance()
+
+        //Act && Arrange more
+        listOfArtifacts.forEach(dao::insert)
+        val listStored = dao.queryAll()
+
+        //Assert
+        listStored[0] shouldEqual Artifact("com.github.icarohs7:depchecker-core")
+        listStored[1] shouldEqual Artifact("com.github.icarohs7:UNoxJCommons")
+        listStored[2] shouldEqual Artifact("com.github.icarohs7:UNoxKCommons")
+        listStored.size shouldEqual 3
     }
 }

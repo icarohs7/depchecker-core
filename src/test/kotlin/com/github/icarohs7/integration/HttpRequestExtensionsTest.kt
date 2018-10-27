@@ -24,17 +24,22 @@
 
 package com.github.icarohs7.integration
 
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
+import org.junit.Test
+import se.lovef.assert.v1.shouldEqual
 
-class HttpRequestExtensionsTest : StringSpec() {
-    init {
-        "should make a http get request" {
-            val baseUrl = "http://www.mocky.io/v2/5b8a68112c00006506280f95"
-            val response = baseUrl.httpGetResponse()
-            
-            response.statusCode shouldBe 200
-            response.body shouldBe """{"response":"hello"}"""
-        }
+class HttpRequestExtensionsTest {
+
+    @Test
+    fun `should make a http get request`() {
+        //Arrange
+        val baseUrl = "http://www.mocky.io/v2/5b8a68112c00006506280f95"
+
+        //Act
+        val response = baseUrl.httpGetResponse()
+
+        //Assert
+        response.statusCode shouldEqual 200
+        response.body shouldEqual """{"response":"hello"}"""
     }
+
 }
