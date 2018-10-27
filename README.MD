@@ -1,13 +1,29 @@
-# depchecker-core
-[![GitHub version](
-https://badge.fury.io/gh/icarohs7%2Fdepchecker-core.svg)](
+# ![](https://www.tutorialsandyou.com/images/kotlin.png) depchecker-core
+
+[![GitHub version](https://badge.fury.io/gh/icarohs7%2Fdepchecker-core.svg)](
 https://github.com/icarohs7/depchecker-core/releases)
-[![](
-https://jitpack.io/v/icarohs7/depchecker-core.svg)](
+[![](https://jitpack.io/v/icarohs7/depchecker-core.svg)](
 https://jitpack.io/#icarohs7/depchecker-core)
-[![GitHub license](
-https://img.shields.io/github/license/icarohs7/depchecker-core.svg)](
+[![Build Status](https://travis-ci.org/icarohs7/depchecker-core.svg?branch=master)](
+https://travis-ci.org/icarohs7/depchecker-core)
+[![GitHub license](https://img.shields.io/github/license/icarohs7/depchecker-core.svg)](
 https://github.com/icarohs7/depchecker-core/blob/master/LICENSE)
+
+[![GitHub top language](https://img.shields.io/github/languages/top/icarohs7/depchecker-core.svg)](
+https://github.com/icarohs7/depchecker-core/search?l=kotlin)
+[![GitHub last commit](https://img.shields.io/github/last-commit/icarohs7/depchecker-core.svg)](
+https://github.com/icarohs7/depchecker-core/commits/master)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/icarohs7/depchecker-core.svg)](
+https://github.com/icarohs7/depchecker-core/commits/master)
+[![GitHub issues](https://img.shields.io/github/issues/icarohs7/depchecker-core.svg)](
+https://github.com/icarohs7/depchecker-core/issues)
+
+[![GitHub forks](https://img.shields.io/github/forks/icarohs7/depchecker-core.svg?style=social&label=Fork)](
+https://github.com/icarohs7/depchecker-core/fork)
+[![GitHub stars](https://img.shields.io/github/stars/icarohs7/depchecker-core.svg?style=social&label=Stars)](
+https://github.com/icarohs7/depchecker-core)
+[![GitHub watchers](https://img.shields.io/github/watchers/icarohs7/depchecker-core.svg?style=social&label=Watch)](
+https://github.com/icarohs7/depchecker-core/subscription)
 
 ## Description
 A library to check artifact versions programmatically (currently with MavenCentral repository)
