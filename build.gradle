@@ -50,13 +50,32 @@ dependencies {
     testImplementation "se.lovef:kotlin-assert-utils:${versions.kotlinAssertUtils}"
 }
 
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
 jacoco {
     toolVersion = "0.8.2"
 }
 
-repositories {
-    mavenCentral()
-    jcenter()
+task codeCoverageReport(type: JacocoReport) {
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+    subprojects.each {
+        sourceSets it.sourceSets.main
+    }
+
+    reports {
+        xml.enabled true
+        xml.destination(file("${buildDir}/reports/jacoco/report.xml"))
+        html.enabled false
+        csv.enabled false
+    }
+}
+
+codeCoverageReport.dependsOn {
+    subprojects*.test
 }
 
 compileKotlin {
